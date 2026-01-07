@@ -3,3 +3,4 @@ numpy
 streamlit
 scikit-learn
 option_menu
+streamlit_option_menu
