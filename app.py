@@ -24,14 +24,12 @@ st.set_page_config(
 def load_data():
     with open("xgb_cardio_model.pkl", "rb") as f:
         model = pickle.load(f)
-    with open("scaler.pkl", "rb") as f:
-        scaler = pickle.load(f)
-    return model, scaler
+    return model
 
 try:
-    model, scaler = load_data()
+    model = load_data()
 except FileNotFoundError:
-    st.error("Model files not found! Please ensure 'xgb_cardio_model.pkl' and 'scaler.pkl' are in the directory.")
+    st.error("Model file not found! Please ensure 'xgb_cardio_model.pkl' is in the directory.")
     st.stop()
 
 # -------------------------
@@ -257,16 +255,24 @@ def prediction_page():
         chol_map = int(cholesterol.split("(")[1][0])
         gluc_map = int(gluc.split("(")[1][0])
         
-        input_data = np.array([[ 
+        # DataFrame with correct column names to avoid "X does not have valid feature names" warning
+        input_data = pd.DataFrame([[ 
             age, gender_map, ap_hi, ap_lo, 
             chol_map, gluc_map, 
             smoke_map, alco_map, active_map, bmi
-        ]])
+        ]], columns=['age', 'gender', 'ap_hi', 'ap_lo', 'cholesterol', 'gluc', 'smoke', 'alco', 'active', 'bmi'])
+
+        
+        # -------------------------
+        # Validation Checks
+        # -------------------------
+        if age < 30:
+            st.warning(f"⚠️ **Note on Age:** The model was trained on adults (approx. 30-65 years old). Predicting for an age of {age} may produce unreliable results (typically defaulting to low risk).")
+
         
         # Prediction
-        input_scaled = scaler.transform(input_data)
-        prob = model.predict_proba(input_scaled)[0][1]
-        prediction = model.predict(input_scaled)[0]
+        prob = model.predict_proba(input_data)[0][1]
+        prediction = model.predict(input_data)[0]
         
         # Display Results
         st.markdown("---")
