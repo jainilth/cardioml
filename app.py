@@ -400,7 +400,7 @@ def about_page():
         - **Web App**: Streamlit, Plotly
         - **Data Processing**: Pandas, NumPy
         
-        📫 **Contact**: [email@example.com](mailto:email@example.com)
+        📫 **Contact**: [github profile](https://github.com/jainilth)
         """)
 
 # -------------------------
