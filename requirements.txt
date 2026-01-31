@@ -1,9 +1,7 @@
 pandas
 numpy
 streamlit
-altair<5
 scikit-learn
 streamlit-option-menu
 plotly
 xgboost
-imghdr
