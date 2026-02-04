@@ -1,6 +1,7 @@
 pandas
 numpy
 streamlit
+altair==4.2.2
 scikit-learn
 streamlit-option-menu
 plotly
